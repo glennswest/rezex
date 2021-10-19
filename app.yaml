@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: rezex
-    image: glennswest/rezex:053aa9d
+    image: glennswest/rezex:8084378
     args:
     - /server
     livenessProbe: 
