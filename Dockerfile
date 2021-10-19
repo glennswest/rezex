@@ -1,11 +1,15 @@
-FROM registry.fedoraproject.org/f33/python3
-
+FROM golang:alpine as builder
 WORKDIR /app
-
-COPY requirements.txt requirements.txt
-RUN pip3 install -r requirements.txt
-
 COPY . .
+RUN  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -ldflags="-w -s" -o /go/bin/rezex .
 
-CMD [ "python3", "app.py"]
+FROM scratch
+VOLUME /tmp
+VOLUME /data
+WORKDIR /root/
+COPY --from=builder /go/bin/rezex /go/bin/rezex
+COPY commit.id commit.id
+EXPOSE 8080
+ENTRYPOINT ["/go/bin/rezex"]
+
 

@@ -1,0 +1,69 @@
+apiVersion: v1
+items:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"zombiestorm:c4663e5"},"fieldPath":"spec.template.spec.containers[?(@.name==\"zombiestorm\")].image"}]'
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: zombiestorm
+      app.kubernetes.io/component: zombiestorm
+      app.kubernetes.io/instance: zombiestorm
+    name: zombiestorm
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        deployment: zombiestorm
+    strategy: {}
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          deployment: zombiestorm
+      spec:
+        containers:
+        - image: ' '
+          name: zombiestorm
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          volumeMounts:
+          - mountPath: /data
+            name: zombiestorm-volume-1
+          - mountPath: /tmp
+            name: zombiestorm-volume-2
+        volumes:
+        - emptyDir: {}
+          name: zombiestorm-volume-1
+        - emptyDir: {}
+          name: zombiestorm-volume-2
+  status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: zombiestorm
+      app.kubernetes.io/component: zombiestorm
+      app.kubernetes.io/instance: zombiestorm
+    name: zombiestorm
+  spec:
+    ports:
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deployment: zombiestorm
+  status:
+    loadBalancer: {}
+kind: List
+metadata: {}
