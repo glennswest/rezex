@@ -31,8 +31,8 @@ func (p *program) Stop(s service.Service) error {
 func main() {
 	svcConfig := &service.Config{
 		Name:        "rezex",
-		DisplayName: "ZombieStorm",
-		Description: "ZombieStorme",
+		DisplayName: "rezex",
+		Description: "rezex",
 	}
 
 	prg := &program{}
@@ -71,7 +71,6 @@ func rezexserver() {
 	r.Use(gin.Recovery())
 
 	r.GET("/healthz", func(c *gin.Context) {
-                time.Sleep(3 * time.Second)
 		c.JSON(200, gin.H{
 			"message": "ok",
 		})
