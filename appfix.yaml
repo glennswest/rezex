@@ -1,16 +1,29 @@
 apiVersion: v1
 kind: ReplicationController
 metadata:
-  name: frontend-1
+  name: rezex-1
 spec:
   replicas: 1  
   selector:    
-    name: frontend
+    name: rezex
   template:    
     metadata:
       labels:  
-        name: frontend 
+        name: rezex
     spec:
+      tolerations:
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 30
+        - key: node.kubernetes.io/unknown
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 30
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 30
       containers:
       - name: rezex
         image: glennswest/rezex:8084378
