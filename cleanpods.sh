@@ -1,0 +1,2 @@
+oc get pod -A | grep -i terminating > /tmp/terminating.txt; sleep 15; while IFS= read -r line; do ns=`echo $line | awk '{print $1}'`; pod=`echo $line | awk '{print $2}'`; echo "`date` - Checking pod: $pod in namespace: $namespace"; oc get pod $pod -n $ns | grep -i terminating > /dev/null 2>&1; if [ $? -eq 0 ]; then echo "`date` - Delete pod: $pod in namespace: $ns after 15 minutes forcefully "; oc delete pod $pod -n $ns --force; fi; done < /tmp/terminating.txt; rm -f /tmp/terminating.txt
+
